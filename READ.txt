@@ -1,0 +1,3 @@
+﻿install aws-sdk, express,..  -> npm install
+demo sử dụng hàm phân tính gắn nhãn nhận biết hình ảnh của aws cung cấp với hình ảnh được chọn từ mấy local, ngoài cách này vẫn có thể up ảnh vào s3 aws sau đó cấp quyền cho call đến s3 
+ 

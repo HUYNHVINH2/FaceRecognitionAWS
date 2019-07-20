@@ -1,0 +1,64 @@
+<!--
+    Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+    PDX-License-Identifier: MIT-0 (For details, see https://github.com/awsdocs/amazon-rekognition-developer-guide/blob/master/LICENSE-SAMPLECODE.)
+    -->
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src="https://sdk.amazonaws.com/js/aws-sdk-2.16.0.min.js"></script>
+      <script src="https://sdk.amazonaws.com/js/aws-sdk-2.496.0.min.js"></script>
+      <meta charset="UTF-8">
+      <title>Rekognition</title>
+    </head>
+    <style>
+      .resultDetect{
+        float: right;
+        margin-right:500px; 
+      }
+    </style>
+    <body>
+      <H1>Face Recognition</H1>
+      <p>Chọn những hình ảnh có trong project awsREKO</p>
+      <img id="image"src='../image/image.jpg'><br>
+      <button id="btnUploadFile" >Xác Nhận</button>
+      <p>Chọn hình</p>
+      <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*">
+      <p id="opResult"></p>
+      
+      <div class='resultDetect'></div>
+    </body>
+    <script>
+      $(document).ready(function(){
+        var fileName ='image.jpg';
+        $('#fileToUpload').change(function(e){
+          $('.resultDetect').empty();
+           fileName = e.target.files[0].name;
+            console.log(fileName);
+            $("#image").attr("src", `../image/${fileName}`);
+          $('#btnUploadFile').show();
+        })
+        $('#btnUploadFile').click(function(){
+          $('.resultDetect').empty();
+          $('.resultDetect').append('<h1>Hệ thống đang phân tích ....</h1>')
+          $.ajax({
+            type: 'post',
+            url: '/detectLabels',
+            data: { fileName },
+            dataType: 'json',
+            success: function (data) {
+              $('.resultDetect').empty();
+              $('.resultDetect').append('<h1>KếT QUẢ</h1>')
+              data.data.Labels.forEach(item => {
+                $('.resultDetect').append(`<p>Thuộc tính :<b>  ${item.Name}</b></p>
+                <p>Phần trăm :<b>${item.Confidence}%</b></p><br>`)
+              });
+               console.log(data)
+            }, error: function (err) {
+                alert(err);
+            }
+        })
+        })
+      })
+    </script>
+    </html>
